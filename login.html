@@ -1,0 +1,137 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/login.css">
+</head>
+
+<body>
+<div class="background-image">
+        <img src="./assets/images/Ambiong.jpg">
+    </div>
+
+    <header class="header">
+        <nav class="nav container">
+            <a class="logo">BARANGAY BUDDY</a>
+            <div class="nav-mobile">
+                <ul class="list">
+                    <li class="list-item">
+                        <a href="" class="list-link">Officials</a>
+                    </li>
+                    <li class="list-item">
+                        <a href="" class="list-link">Barangay Hall Location</a>
+                    </li>
+                   
+                </ul>
+                <button class="icon-btn menu-toggle-btn menu-toggle-close place-items-center">
+                    <i class="ri-close-line"></i>
+                </button>
+            </div>
+
+            <div class="align-right">
+                <button class="icon-btn menu-toggle-btn menu-toggle-open place-items-center">
+                    <i class="ri-function-line"></i>
+                </button>
+                <button class="icon-btn theme-toggle-btn place-items-center">
+                    <i class="ri-sun-line theme-light-icon"></i>
+                    <i class="ri-moon-line theme-dark-icon"></i>
+                </button>
+            </div>
+        </nav>
+</header>
+
+	<section class="login-form">
+		<div class="wrapper">
+			<form id="LoginForm">
+				<h1>LOGIN</h1>
+				<div class="input-box">
+					<input type="email" id="EmailAdd" placeholder="Email Address" required>
+					<i class="ri-user-line"></i>
+				</div>
+				<div class="input-box">
+					<input type="password" id="Password" placeholder="Password" required>
+					<i class="ri-lock-password-line"></i>
+				</div>
+			
+
+				<div class="remember-forgot">
+					<label><input type="checkbox">Remember Me</label>
+					<a href="#">Forget Password?</a>
+				</div>
+
+				<button type="submit" id="Loginbtn" class="btn">Login</button>
+            </form>
+		</div>
+	</section>
+
+
+	<footer class="footer">
+    <div class="footer-container container">
+        <span class="copyright-information">
+            &copy; 2023 Barangay Buddy. All right reserved.
+        </span>
+        <ul class="list">
+            <li class="list-item">
+                <a href="#" class="list-link">Privacy Policy</a>
+            </li>
+            <li class="list-item">
+                <a href="#" class="list-link">About Us</a>
+            </li>
+        </ul>
+    </div>
+</footer>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword  } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCGeVx4ZmZPMXjeBR71lHbxVy8i-4gD9uQ",
+      authDomain: "barangaybuddy.firebaseapp.com",
+      databaseURL: "https://barangaybuddy-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "barangaybuddy",
+      storageBucket: "barangaybuddy.appspot.com",
+      messagingSenderId: "107104492368",
+      appId: "1:107104492368:web:8896aec25ca1838cefaa55"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app); 
+    
+
+    let EmailAdd = document.getElementById('EmailAdd');
+    let Password = document.getElementById('Password');
+    let LoginForm = document.getElementById('LoginForm');
+
+    let SignInUser = evt => {
+        evt.preventDefault();
+
+        signInWithEmailAndPassword(auth, EmailAdd.value,  Password.value)
+        .then((credentials)=>{
+        window.location.assign("index.html");
+            console.log(credentials);
+
+        })
+        .catch((error)=>{
+            alert(error.message);
+            console.log(error.code);
+            console.log(error.message);
+        })
+    }
+    LoginForm.addEventListener('submit', SignInUser);
+  </script>
+
+<script src="./assets/js/main.js"></script>
+</body>
+</html>

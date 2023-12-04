@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suggestions</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/suggestions.css">
+</head>
+
+<body>
+    <div class="background-image">
+        <img src="./assets/images/Ambiong.jpg">
+    </div>
+
+    <header class="header">
+        <nav class="nav container">
+            <a href="./index.html" class="logo">BARANGAY BUDDY</a>
+            <div class="nav-mobile">
+                <ul class="list">
+                    <li class="list-item">
+                       <a href="./index.html" class="list-link current">Home</a>
+                    </li>
+                    <li class="list-item">
+                        <a href="" class="list-link">Officials</a>
+                    </li>
+                    <li class="list-item">
+                        <a href="" class="list-link">Barangay Hall Location</a>
+                    </li>
+                    <li class="list-item dropdown">
+                        <button class="list-link dropdown-btn place-items-center">
+                            Settings <i class="ri-arrow-drop-right-line"></i>
+                        </button>
+                        <ul class="list dropdown-menu">
+                            <li class="list-item">
+                                <a href="" class="list-link current">Settings</a>
+                            </li>
+                            <li class="list-item">
+                                <a href="" class="list-link current">Terms and Conditions</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <button class="icon-btn menu-toggle-btn menu-toggle-close place-items-center">
+                    <i class="ri-close-line"></i>
+                </button>
+            </div>
+
+            <div class="align-right">
+                <button class="icon-btn menu-toggle-btn menu-toggle-open place-items-center">
+                    <i class="ri-function-line"></i>
+                </button>
+                <button class="icon-btn theme-toggle-btn place-items-center">
+                    <i class="ri-sun-line theme-light-icon"></i>
+                    <i class="ri-moon-line theme-dark-icon"></i>
+                </button>
+                <button class="icon-btn place-items-center">
+                    <a href="profile.php">
+                    <i class="ri-user-3-line"></i>
+                    </a>
+                </button>
+                <button class="icon-btn place-items-center">
+                    <a href="login.php">
+                    <i class="ri-logout-box-r-line"></i>
+                    </a>
+                </button>
+            </div>
+
+        </nav>
+</header>
+<section class="management-area">
+<div class="management-area-container">
+<h2 id="suggestions-title">Residents Suggestions</h2>
+
+<div id="reportsContainer" class="dashboard card-dashboard"></div>
+    <div id="reportTemplate" class="dashboard card-dashboard" style="display: none;">
+        
+        <h1 class="title independent-title">Sender: <span id="name">N/A</span></h1>
+        <h3 class="report-location">Current Location: <span id="currentLocation">N/A</span></h3>
+        <h3 class="report-content"> <span id="reportContent">N/A</span></h3>
+        <div class="acknowledgeainer"></div>
+        <button id="viewReportButton" type="button" class="card-body-link">View Report</button>
+    </div>     
+</div>            
+</section>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCGeVx4ZmZPMXjeBR71lHbxVy8i-4gD9uQ",
+            authDomain: "barangaybuddy.firebaseapp.com",
+            databaseURL: "https://barangaybuddy-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "barangaybuddy",
+            storageBucket: "barangaybuddy.appspot.com",
+            messagingSenderId: "107104492368",
+            appId: "1:107104492368:web:8896aec25ca1838cefaa55"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const reportsContainer = document.getElementById('reportsContainer');
+
+        function createSuggestionElement(suggestionData) {
+            const suggestionTemplate = document.createElement('div');
+            suggestionTemplate.classList.add('dashboard', 'card-dashboard');
+
+            suggestionTemplate.innerHTML = ` 
+                <h1 class="title independent-title">Sender: <span id="name">${suggestionData.sugName || 'N/A'}</span></h1>
+                <h3 class="report-location">Suggestion: <span id="currentLocation">${suggestionData.suggest || 'N/A'}</span></h3>
+                <div class="report-content-container">
+                    <!-- No button for Suggestions -->
+                </div>
+            `;
+
+            return suggestionTemplate;
+        }
+
+        function renderSuggestions(suggestions) {
+            // Clear existing suggestions
+            reportsContainer.innerHTML = '';
+
+            // Create and append suggestion elements to the container in reversed order
+            suggestions.slice().reverse().forEach(suggestionData => {
+                const suggestionElement = createSuggestionElement(suggestionData);
+                reportsContainer.appendChild(suggestionElement);
+            });
+        }
+
+        const dbRef = ref(database, 'Suggestions');
+
+        onValue(dbRef, (snapshot) => {
+            // Initialize an array to hold suggestion data
+            const suggestions = [];
+
+            // Iterate through each child in the snapshot
+            snapshot.forEach((childSnapshot) => {
+                const childData = childSnapshot.val();
+
+                // Add child data to the suggestions array
+                suggestions.push({
+                    sugName: childData.sugName,
+                    suggest: childData.suggest,
+                    timestamp: childData.timestamp
+                });
+            });
+
+            // Render suggestions
+            renderSuggestions(suggestions);
+        });
+    </script>
+
+<footer class="footer">
+    <div class="footer-container container">
+        <span class="copyright-information">
+            &copy; 2023 Barangay Buddy. All right reserved.
+        </span>
+        <ul class="list">
+            <li class="list-item">
+                <a href="#" class="list-link">Privacy Policy</a>
+            </li>
+            <li class="list-item">
+                <a href="#" class="list-link">About Us</a>
+            </li>
+        </ul>
+    </div>
+</footer>
+
+<script src="./assets/js/main.js"></script>
+</body>
+</html>

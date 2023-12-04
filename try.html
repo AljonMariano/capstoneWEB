@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="stylesheet" href="./assets/css/try.css">
+</head>
+
+<body>
+    <div class="background-image">
+        <img src="./assets/images/Ambiong.jpg">
+    </div>
+
+    <header class="header">
+        <nav class="nav container">
+            <a href="./index.html" class="logo">BARANGAY BUDDY</a>
+            <div class="nav-mobile">
+                <ul class="list">
+                    <li class="list-item">
+                       <a href="./index.html" class="list-link current">Home</a>
+                    </li>
+                    <li class="list-item">
+                        <a href="" class="list-link">Officials</a>
+                    </li>
+                    <li class="list-item">
+                        <a href="" class="list-link">Barangay Hall Location</a>
+                    </li>
+                    <li class="list-item dropdown">
+                        <button class="list-link dropdown-btn place-items-center">
+                            Settings <i class="ri-arrow-drop-right-line"></i>
+                        </button>
+                        <ul class="list dropdown-menu">
+                            <li class="list-item">
+                                <a href="" class="list-link current">Settings</a>
+                            </li>
+                            <li class="list-item">
+                                <a href="" class="list-link current">Terms and Conditions</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <button class="icon-btn menu-toggle-btn menu-toggle-close place-items-center">
+                    <i class="ri-close-line"></i>
+                </button>
+            </div>
+
+            <div class="align-right">
+                <button class="icon-btn menu-toggle-btn menu-toggle-open place-items-center">
+                    <i class="ri-function-line"></i>
+                </button>
+                <button class="icon-btn theme-toggle-btn place-items-center">
+                    <i class="ri-sun-line theme-light-icon"></i>
+                    <i class="ri-moon-line theme-dark-icon"></i>
+                </button>
+                <button class="icon-btn place-items-center">
+                    <a href="profile.php">
+                    <i class="ri-user-3-line"></i>
+                    </a>
+                </button>
+                <button class="icon-btn place-items-center">
+                    <a href="login.html">
+                    <i class="ri-logout-box-r-line"></i>
+                    </a>
+                </button>
+            </div>
+
+        </nav>
+</header>
+
+<section class="management-area">
+    <div class="management-area-container">
+        <div class="dashboard">
+            <div class="card-dashboard">
+                <h1 class="title independent-title">Title: <span id="name"></span></h1>
+                <h3 class="report-location">Current Location: <span id="currentLocation"></span></h3>  
+                <p id="reportContent" class="report-content"></p> 
+                
+            </div>
+            <button type="submit" id="acknowledge" class="card-body-link">Acknowledge</button>
+            <p id="acknowledgement-container"></p>
+        </div>
+        
+    </div>
+</section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Get the URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // Get the 'report' parameter value
+            const reportParam = urlParams.get('report');
+            console.log('Report Param:', reportParam);
+
+            try {
+                // Parse the JSON data
+                const reportData = JSON.parse(decodeURIComponent(reportParam));
+                console.log('Report Data:', reportData);
+
+                // Set values in HTML
+                const nameElement = document.getElementById('name');
+                const currentLocationElement = document.getElementById('currentLocation');
+                const reportContentElement = document.getElementById('reportContent');
+
+                if (nameElement) {
+                    nameElement.innerText = reportData && reportData.resName ? reportData.resName : 'N/A';
+                }
+
+                if (currentLocationElement) {
+                    currentLocationElement.innerText = reportData && reportData.resCurLoc ? reportData.resCurLoc : 'N/A';
+                }
+
+                if (reportContentElement) {
+                    reportContentElement.innerText = reportData && reportData.resReport ? reportData.resReport : 'N/A';
+                }
+            } catch (error) {
+                console.error('Error parsing report data:', error);
+            }
+        });
+    </script>
+
+    <script>
+
+   // Function to handle acknowledgment
+function acknowledgeReport() {
+    // Update the content or perform any actions you want
+    const acknowledgementMessage = "This report has now been acknowledged";
+    
+    // Assuming you have an element to display the acknowledgment message
+    const acknowledgementContainer = document.getElementById('acknowledgement-container');
+    
+    // Update the content of the element
+    if (acknowledgementContainer) {
+        acknowledgementContainer.textContent = acknowledgementMessage;
+    }
+}
+
+// Add an event listener to the Acknowledge button
+const acknowledgeButton = document.getElementById('acknowledge');
+if (acknowledgeButton) {
+    acknowledgeButton.addEventListener('click', acknowledgeReport);
+}
+        </script>
+    
+<script src="./assets/js/main.js"></script>
+</body>
+</html>
